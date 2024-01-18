@@ -115,20 +115,6 @@ app.post("/:user_code/todos", async (req, res) => {
   const { user_code } = req.params;
   const { content, perform_date } = req.body;
 
-  if (!content) {
-    res.status(400)({
-      resultCode: "F-1",
-      msg: "내용없음",
-    });
-    return;
-  }
-  if (!perform_date) {
-    res.status(400)({
-      resultCode: "F-1",
-      msg: "생성일이 없다.",
-    });
-    return;
-  }
   const [[lastTodoRow]] = await pool.query(
     `
     SELECT *
@@ -154,6 +140,22 @@ app.post("/:user_code/todos", async (req, res) => {
     `,
     [user_code, no, content, perform_date]
   );
+
+  
+  if (!content) {
+    res.status(400)({
+      resultCode: "F-1",
+      msg: "내용없음",
+    });
+    return;
+  }
+  if (!perform_date) {
+    res.status(400)({
+      resultCode: "F-1",
+      msg: "생성일이 없다.",
+    });
+    return;
+  }
 
   const [[justCreatedTodoRow]] = await pool.query(
     `
